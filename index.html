@@ -19,7 +19,16 @@
     <main>
       <section id="start" data-nav="Overview">
         <h1>BC1014 Midterm Review</h1>
-        <p>The exam is closed book, pen and paper, with no cheat sheet. It covers all lectures and homework up to the midterm, and some questions ask you to write code by hand.</p>
+        <div class="disclaimer">
+          <p><strong>Please read:</strong> I made this site myself as a TA, based on the lectures, in-class code, and homework. I don't know what will be on the exam. This is my best guess at what's worth practicing, not an official study guide. If something here disagrees with the lectures or with Professor Li, go with the lectures and Professor Li.</p>
+          <ul>
+            <li>It doesn't cover everything. Study all the lectures and homework too.</li>
+            <li>The code boxes run in a simplified Java simulator in your browser. It handles the Java used in this course, but it isn't real Java and won't catch every compile error.</li>
+            <li>The flowchart builder is a practice tool. On the exam, use the flowchart notation from class.</li>
+            <li>The exam is on paper, so practice working through problems by hand, not just running them here.</li>
+          </ul>
+        </div>
+        <p>The exam is closed book, pen and paper, with no cheat sheet. It covers all lectures and homework up to the midterm.</p>
         <ul>
           <li>Flowcharts: reading, tracing, and writing them</li>
           <li>The structure of a Java file</li>
@@ -574,10 +583,109 @@ done</pre>
           </ol>
         </details>
       </section>
+
+      <section id="build" data-nav="Build a flowchart">
+        <h2>Build a flowchart</h2>
+        <p>Drag shapes onto the canvas, connect them with arrows, and fill in each step. Then run the chart, or step through it one shape at a time and watch the variables change.</p>
+        <div class="question"><strong>Question:</strong> Build a chart for one of these, then test it on a few inputs.</div>
+        <ol>
+          <li>Count how many elements of a list are even.</li>
+          <li>Selection sort, using <code>minIndex</code> and <code>swap</code>.</li>
+          <li>Read numbers with <code>getNext</code> until −1, and output the largest one.</li>
+          <li>Binary search, using <code>floor</code> for <code>mid</code>.</li>
+        </ol>
+        <div id="builder" class="fb">
+          <div class="fb-bar">
+            <span class="fb-palette">
+              <button type="button" class="fb-pal io" data-add="io">Input / Output</button>
+              <button type="button" class="fb-pal op" data-add="op">Instruction</button>
+              <button type="button" class="fb-pal dec" data-add="dec"><span>Question?</span></button>
+            </span>
+            <span class="fb-tools">
+              <select data-example aria-label="Load an example">
+                <option value="">Load an example…</option>
+                <option value="power">Largest power of 2</option>
+                <option value="sum">Sum of a list</option>
+              </select>
+              <button type="button" class="ghost" data-clear>Clear</button>
+            </span>
+          </div>
+          <div class="fb-main">
+            <svg class="fb-canvas" role="application" aria-label="Flowchart canvas"></svg>
+            <p class="fb-status" aria-live="polite"></p>
+          </div>
+          <div class="fb-below">
+            <aside class="fb-panel"></aside>
+            <div class="fb-run">
+              <h4>Run the chart</h4>
+              <div class="fb-inputs"></div>
+              <div class="fb-run-buttons">
+                <button type="button" data-run>Run</button>
+                <button type="button" class="ghost" data-step>Step</button>
+                <button type="button" class="ghost" data-reset>Reset</button>
+              </div>
+              <p class="fb-hint">With Step, the highlighted shape is the one that runs next.</p>
+              <pre class="fb-out stdout quiet">Output</pre>
+              <div class="fb-vars"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cards" data-nav="Flashcards">
+        <h2>Flashcards</h2>
+        <div class="fc-top">
+          <span class="fc-tabs">
+            <button type="button" class="ghost" data-mode="flip">Flip</button>
+            <button type="button" class="ghost" data-mode="learn">Learn</button>
+          </span>
+          <select data-topic aria-label="Topic"></select>
+        </div>
+
+        <div class="fc-flip">
+          <button type="button" class="fc-card" aria-label="Flashcard. Click to flip.">
+            <span class="fc-side"></span>
+            <span class="fc-face fc-front-text"></span>
+            <span class="fc-face fc-back-text"></span>
+          </button>
+          <div class="fc-nav">
+            <button type="button" class="ghost" data-prev>← Previous</button>
+            <span class="fc-count"></span>
+            <button type="button" class="ghost" data-next>Next →</button>
+            <button type="button" class="ghost" data-shuffle>Shuffle</button>
+          </div>
+          <p class="fc-hint">Click the card to flip it. The arrow keys move between cards.</p>
+        </div>
+
+        <div class="fc-learn" hidden>
+          <div class="fc-progress">
+            <div class="fc-bar"><span></span></div>
+            <span class="fc-progress-text"></span>
+          </div>
+          <div class="fc-quiz">
+            <div class="fc-prompt"></div>
+            <div class="fc-entry">
+              <input class="fc-answer" spellcheck="false" autocomplete="off" aria-label="Your answer">
+              <button type="button" data-check>Check</button>
+            </div>
+            <div class="fc-feedback" aria-live="polite"></div>
+            <div class="fc-entry-tools">
+              <button type="button" class="ghost" data-override hidden>I was right</button>
+              <button type="button" class="ghost" data-restart>Start over</button>
+            </div>
+          </div>
+          <div class="fc-done" hidden>
+            <p class="fc-done-text"></p>
+            <button type="button" data-again>Go again</button>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
   <script src="interpreter.js"></script>
   <script src="samples.js"></script>
   <script src="app.js"></script>
+  <script src="builder.js"></script>
+  <script src="flashcards.js"></script>
 </body>
 </html>
