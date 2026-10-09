@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BC1014 Midterm Review</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="nav" aria-label="Sections">
+      <div class="nav-head">
+        <a href="#start">Midterm Review</a>
+        <button type="button" id="larger">Larger text</button>
+      </div>
+      <div id="nav-links"></div>
+    </nav>
+
+    <main>
+      <section id="start" data-nav="Overview">
+        <h1>BC1014 Midterm Review</h1>
+        <p>The exam is closed book, pen and paper, with no cheat sheet. It covers all lectures and homework up to the midterm, and some questions ask you to write code by hand.</p>
+        <ul>
+          <li>Flowcharts: reading, tracing, and writing them</li>
+          <li>The structure of a Java file</li>
+          <li>Types: <code>int</code>, <code>double</code>, <code>boolean</code>, <code>String</code></li>
+          <li>Integer arithmetic: <code>/</code>, <code>%</code>, and order of operations</li>
+          <li><code>if</code>, <code>else if</code>, <code>else</code></li>
+          <li><code>while</code>, <code>for</code>, <code>do-while</code>, <code>break</code>, <code>continue</code>, <code>return</code></li>
+          <li>Why a loop is correct and why it stops</li>
+          <li>Searching and sorting from Homework 1</li>
+        </ul>
+      </section>
+
+      <section id="shape" data-nav="A Java file">
+        <h2>The structure of a Java file</h2>
+        <ul>
+          <li>The file <code>X.java</code> contains one <code>public class X</code>. The names must match exactly, including capital letters.</li>
+          <li>Class names are CamelCase. Method names are lowerCamelCase.</li>
+          <li>Every method starts with <code>public static</code>.</li>
+          <li>The program starts running at <code>public static void main(String[] args)</code>.</li>
+          <li>Compile with <code>javac X.java</code>, then run with <code>java X</code>.</li>
+        </ul>
+        <div class="question"><strong>Question:</strong> This program has three problems. Find all of them.</div>
+        <div class="ide" data-sample="averageBroken"></div>
+        <details>
+          <summary>Answer</summary>
+          <ol>
+            <li>Line 3 is missing a semicolon, so the program does not compile.</li>
+            <li>The method is named <code>Main</code>, not <code>main</code>. Java is case sensitive, so there is nothing to run.</li>
+            <li>Once it runs, it prints <code>Average: 8</code>, not 8.33. <code>total / 3</code> is <code>25 / 3</code>, and dividing two ints drops the decimal part.</li>
+          </ol>
+          <p>Fixed version. Dividing by <code>3.0</code> makes it a <code>double</code> division:</p>
+          <div class="ide" data-sample="averageFixed"></div>
+        </details>
+      </section>
+
+      <section id="charts" data-nav="Flowcharts">
+        <h2>Flowcharts</h2>
+        <div class="legend" aria-hidden="true">
+          <div class="shape io">Input or output</div>
+          <div class="shape op">An instruction<br>set x = …</div>
+          <div class="shape dec"><span>A yes/no<br>question?</span></div>
+        </div>
+        <ul>
+          <li>Ovals are input and output. Rectangles are instructions. Diamonds are yes/no questions.</li>
+          <li>Every diamond has two arrows out, one labeled YES and one labeled NO.</li>
+          <li>Lists start at index 1: <code>list[1]</code>, <code>list[2]</code>, …, <code>list[length]</code>.</li>
+          <li>When you trace, write down the value of every variable each time you reach a diamond.</li>
+        </ul>
+
+        <h3>Warm-up</h3>
+        <div class="chart-wrap"><div data-chart="power"></div></div>
+        <div class="question"><strong>Question:</strong> Trace this chart for <code>n = 20</code>. Then try <code>n = 1</code> and <code>n = 32</code>. What problem does it solve?</div>
+        <details>
+          <summary>Answer</summary>
+          <table>
+            <thead><tr><th>p</th><th>p * 2</th><th>p * 2 &gt; 20?</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>2</td><td>NO</td></tr>
+              <tr><td>2</td><td>4</td><td>NO</td></tr>
+              <tr><td>4</td><td>8</td><td>NO</td></tr>
+              <tr><td>8</td><td>16</td><td>NO</td></tr>
+              <tr><td>16</td><td>32</td><td>YES, output 16</td></tr>
+            </tbody>
+          </table>
+          <p>For <code>n = 1</code> it outputs 1. For <code>n = 32</code> it outputs 32.</p>
+          <p>It finds the largest power of 2 that is less than or equal to <code>n</code>.</p>
+        </details>
+
+        <h3>A chart with a list</h3>
+        <div class="chart-wrap"><div data-chart="bigger"></div></div>
+        <div class="question"><strong>Question:</strong> Trace this chart on <code>list = [4, 9, 2, 11]</code>, <code>n = 5</code>. Then trace <code>list = [3, 1, 4]</code>, <code>n = 4</code>. What problem does it solve?</div>
+        <details>
+          <summary>Answer</summary>
+          <table>
+            <caption>[4, 9, 2, 11], n = 5</caption>
+            <thead><tr><th>i</th><th>i &gt; length?</th><th>list[i] &gt; 5?</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>NO</td><td>4 &gt; 5? NO</td></tr>
+              <tr><td>2</td><td>NO</td><td>9 &gt; 5? YES, output 2</td></tr>
+            </tbody>
+          </table>
+          <table>
+            <caption>[3, 1, 4], n = 4</caption>
+            <thead><tr><th>i</th><th>i &gt; length?</th><th>list[i] &gt; 4?</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>NO</td><td>3 &gt; 4? NO</td></tr>
+              <tr><td>2</td><td>NO</td><td>1 &gt; 4? NO</td></tr>
+              <tr><td>3</td><td>NO</td><td>4 &gt; 4? NO</td></tr>
+              <tr><td>4</td><td>YES, output 0</td><td></td></tr>
+            </tbody>
+          </table>
+          <p>It outputs the position of the first element that is greater than <code>n</code>, or 0 if there is none.</p>
+          <p>It checks <code>i &gt; length</code> before it reads <code>list[i]</code>, so it never reads past the end of the list.</p>
+        </details>
+      </section>
+
+      <section id="tojava" data-nav="Chart to Java">
+        <h2>From a flowchart to a Java method</h2>
+        <p>This chart finds the distance between two numbers using only zero tests and subtracting 1.</p>
+        <div class="chart-wrap"><div data-chart="distance"></div></div>
+        <p>The loop keeps going while <code>i</code> is not 0 <strong>and</strong> <code>j</code> is not 0. In Java, that is <code>while (i != 0 &amp;&amp; j != 0)</code>. When the loop ends, at least one of them is 0.</p>
+        <div class="question"><strong>Question:</strong> Before running, what do <code>distance(3, 8)</code> and <code>distance(4, 4)</code> return? What about <code>distance(-2, 3)</code>?</div>
+        <div class="ide" data-sample="distance"></div>
+        <details>
+          <summary>Answer</summary>
+          <p><code>distance(3, 8)</code>: after 3 passes, <code>i</code> is 0 and <code>j</code> is 5, so it returns 5.</p>
+          <p><code>distance(4, 4)</code>: both reach 0 together. <code>i == 0</code> is true, so it returns <code>j</code>, which is 0.</p>
+          <p><code>distance(-2, 3)</code> returns −5, which is wrong. Subtracting 1 from −2 moves it away from 0, so <code>j</code> reaches 0 first and the method returns <code>i</code>, which is −5. The chart only works when both inputs are at least 0. <code>distanceAlt</code> works for any two ints.</p>
+        </details>
+      </section>
+
+      <section id="types" data-nav="Types">
+        <h2>Types</h2>
+        <table>
+          <thead><tr><th>Type</th><th>Holds</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><code>int</code></td><td>whole numbers from about −2.1 billion to 2.1 billion</td><td><code>42</code></td></tr>
+            <tr><td><code>double</code></td><td>decimal numbers</td><td><code>3.8</code></td></tr>
+            <tr><td><code>boolean</code></td><td><code>true</code> or <code>false</code></td><td><code>5 &gt; 3</code></td></tr>
+            <tr><td><code>String</code></td><td>text</td><td><code>"hello"</code></td></tr>
+          </tbody>
+        </table>
+        <p>Other number types from class: <code>byte</code>, <code>short</code>, <code>long</code> (whole numbers of different sizes), <code>float</code> (a less precise decimal, written <code>3.3F</code>), and <code>char</code> (one character).</p>
+        <div class="two">
+          <div>
+            <h3>Converting between types</h3>
+            <p><code>double d = 3;</code> is allowed. The int becomes <code>3.0</code>.</p>
+            <p><code>int x = 3.8;</code> does not compile. You can't put a <code>double</code> into an <code>int</code> without a cast.</p>
+            <p>A cast drops the decimal part: <code>(int) 3.8</code> is 3, and <code>(int) -3.8</code> is −3.</p>
+          </div>
+          <div>
+            <h3>Order of operations</h3>
+            <p><code>*</code>, <code>/</code>, and <code>%</code> happen before <code>+</code> and <code>-</code>.</p>
+            <p>Operators at the same level go left to right. Parentheses go first.</p>
+          </div>
+        </div>
+        <p>A condition in an <code>if</code> or <code>while</code> must be a <code>boolean</code>. <code>if (1)</code> does not compile.</p>
+      </section>
+
+      <section id="ints" data-nav="Integer math">
+        <h2>Integer math</h2>
+        <ul>
+          <li><code>int / int</code> gives an int. The decimal part is dropped, so the result rounds toward zero: <code>7 / 2</code> is 3 and <code>-7 / 2</code> is −3.</li>
+          <li><code>a % b</code> is the remainder after dividing <code>a</code> by <code>b</code>. Its sign matches <code>a</code>: <code>-7 % 2</code> is −1.</li>
+          <li><code>+</code> with a <code>String</code> on either side joins text instead of adding.</li>
+        </ul>
+        <div class="question"><strong>Question:</strong> Predict all eleven lines before running.</div>
+        <div class="ide" data-sample="arith"></div>
+        <details>
+          <summary>Answer</summary>
+          <ul>
+            <li><code>3 + 6 * 2</code> = <code>3 + 12</code> = 15</li>
+            <li><code>20 - 6 % 4</code> = <code>20 - 2</code> = 18</li>
+            <li><code>(20 - 6) % 4</code> = <code>14 % 4</code> = 2</li>
+            <li><code>17 / 4</code> = 4, and <code>17 % 4</code> = 1, because 17 = 4 × 4 + 1</li>
+            <li><code>4 % 17</code> = 4, because 17 goes into 4 zero times with 4 left over</li>
+            <li><code>-23 / 4</code> = −5. The exact answer is −5.75, and dropping the decimal gives −5, not −6.</li>
+            <li><code>-23 % 4</code> = −3, because −5 × 4 = −20, and −23 − (−20) = −3</li>
+            <li><code>4 + 5 + "6"</code>: left to right, <code>4 + 5</code> is 9, then <code>9 + "6"</code> is <code>"96"</code></li>
+            <li><code>"4" + 5 + 6</code>: <code>"4" + 5</code> is <code>"45"</code>, then <code>"45" + 6</code> is <code>"456"</code></li>
+            <li><code>"4" + (5 + 6)</code>: the parentheses go first, so it is <code>"4" + 11</code> = <code>"411"</code></li>
+          </ul>
+        </details>
+
+        <h3>doubles and overflow</h3>
+        <div class="question"><strong>Question:</strong> Predict each line. Which ones are surprising?</div>
+        <div class="ide" data-sample="doubles"></div>
+        <details>
+          <summary>Answer</summary>
+          <ul>
+            <li>A <code>double</code> can't store 0.1 or 0.2 exactly, so small errors show up: <code>0.30000000000000004</code> and <code>0.09999999999999998</code>.</li>
+            <li><code>7 / 2</code> is 3 because both sides are ints. <code>7 / 2.0</code> is 3.5 because one side is a double.</li>
+            <li><code>double half = 7 / 2;</code> prints <code>3.0</code>. The division happens first, as ints, and gives 3. Only then is 3 turned into a double.</li>
+            <li><code>Integer.MAX_VALUE</code> is the largest int. Adding 1 to it wraps around to the most negative int, −2147483648. This is called overflow.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="bool" data-nav="&amp;&amp; and ||">
+        <h2><code>&amp;&amp;</code> and <code>||</code></h2>
+        <ul>
+          <li><code>a &amp;&amp; b</code> is true only if both are true. If <code>a</code> is false, Java skips <code>b</code>.</li>
+          <li><code>a || b</code> is true if at least one is true. If <code>a</code> is true, Java skips <code>b</code>.</li>
+          <li><code>!a</code> flips true and false.</li>
+        </ul>
+        <div class="question"><strong>Question:</strong> <code>check</code> prints a line every time it is called. What is the full output?</div>
+        <div class="ide" data-sample="shorts"></div>
+        <details>
+          <summary>Answer</summary>
+          <pre class="expect">true
+check 2
+false
+false
+check 4
+true</pre>
+          <ul>
+            <li><code>5 &gt; 3 || check(1)</code>: the left side is true, so <code>check(1)</code> never runs.</li>
+            <li><code>5 &lt; 3 || check(2)</code>: the left side is false, so <code>check(2)</code> runs. It prints <code>check 2</code> and returns <code>2 &gt; 2</code>, which is false.</li>
+            <li><code>5 &lt; 3 &amp;&amp; check(3)</code>: the left side is false, so <code>check(3)</code> never runs.</li>
+            <li><code>5 &gt; 3 &amp;&amp; check(4)</code>: the left side is true, so <code>check(4)</code> runs and returns true.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="ifs" data-nav="if / else">
+        <h2><code>if</code> and <code>else</code></h2>
+        <div class="two">
+          <pre class="static-code">if (condition) {
+    // runs if condition is true
+}</pre>
+          <pre class="static-code">if (condition) {
+    // runs if true
+} else {
+    // runs if false
+}</pre>
+        </div>
+        <ul>
+          <li>In an <code>if</code> / <code>else if</code> / <code>else</code> chain, Java runs only the <strong>first</strong> branch whose condition is true and skips the rest.</li>
+          <li>Separate <code>if</code> statements are each checked on their own, so more than one can run.</li>
+          <li>An <code>else</code> belongs to the <code>if</code> right before it.</li>
+        </ul>
+
+        <h3>Letter grades</h3>
+        <p>Given a score, print A for 90 and up, B for 80–89, C for 70–79, and F otherwise.</p>
+        <div class="chart-wrap"><div data-chart="grade"></div></div>
+        <div class="question"><strong>Question:</strong> This version uses separate <code>if</code> statements. What does it print for 95? For 85? For 50? Change the input and run it.</div>
+        <div class="ide" data-sample="gradeWrong"></div>
+        <details>
+          <summary>Answer</summary>
+          <p>For 95, it prints <code>A</code>, <code>B</code>, and <code>C</code>. All three conditions are true, and each <code>if</code> is checked separately.</p>
+          <p>For 85, it prints <code>B</code> and <code>C</code>. For 50, it prints <code>F</code>. The <code>else</code> only belongs to the last <code>if</code>.</p>
+          <p>The fix is an <code>else if</code> chain, so only one branch runs:</p>
+          <div class="ide" data-sample="gradeRight"></div>
+          <p>The order of the chain matters. If you checked <code>score &gt;= 70</code> first, a 95 would get a C.</p>
+        </details>
+
+        <h3>Using <code>return</code> instead of <code>else</code></h3>
+        <div class="question"><strong>Question:</strong> This version also uses separate <code>if</code> statements. Why does it work?</div>
+        <div class="ide" data-sample="gradeReturn"></div>
+        <details>
+          <summary>Answer</summary>
+          <p><code>return</code> leaves the method immediately. Once a grade is returned, the <code>if</code> statements below it never run.</p>
+        </details>
+
+        <h3>Every path must return</h3>
+        <pre class="static-code">public static int sign(int n) {
+    if (n &gt; 0) {
+        return 1;
+    }
+    if (n &lt; 0) {
+        return -1;
+    }
+    if (n == 0) {
+        return 0;
+    }
+}</pre>
+        <div class="question"><strong>Question:</strong> Every int is positive, negative, or zero, so this always returns something. Why doesn't it compile?</div>
+        <details>
+          <summary>Answer</summary>
+          <p>The compiler doesn't reason about what <code>n</code> could be. It sees three separate <code>if</code> statements that might all be false, and then the method reaches the end without a <code>return</code>. Replacing the last <code>if</code> with <code>else</code>, or with a plain <code>return 0;</code>, fixes it.</p>
+        </details>
+      </section>
+
+      <section id="whiles" data-nav="while">
+        <h2><code>while</code> loops</h2>
+        <pre class="static-code">while (condition) {
+    // body
+}</pre>
+        <ul>
+          <li>The condition is checked <strong>before</strong> each pass. If it is false at the start, the body runs zero times.</li>
+          <li>Something in the body must change a variable in the condition, or the loop never ends.</li>
+          <li><code>break</code> leaves the loop. <code>continue</code> skips the rest of the body and goes back to the condition. <code>return</code> leaves the whole method.</li>
+        </ul>
+        <div class="question"><strong>Question:</strong> Which numbers are printed?</div>
+        <div class="ide" data-sample="branch"></div>
+        <details>
+          <summary>Answer</summary>
+          <p><code>1, 2, 4, 5, 7</code>. At 3 and 6, <code>continue</code> skips the print. At 8, <code>break</code> ends the loop, so 8 is not printed and 9 through 12 are never reached.</p>
+        </details>
+
+        <h3>Sum of digits</h3>
+        <p>For <code>n &gt;= 0</code>: <code>n % 10</code> is the last digit, and <code>n / 10</code> removes the last digit.</p>
+        <div class="chart-wrap"><div data-chart="digits"></div></div>
+        <div class="question"><strong>Question:</strong> Trace <code>sumDigits(1904)</code>. Write <code>n</code> and <code>sum</code> after each pass.</div>
+        <div class="ide" data-sample="digits"></div>
+        <details>
+          <summary>Answer</summary>
+          <table>
+            <thead><tr><th>n before</th><th>digit added</th><th>sum after</th><th>n after</th></tr></thead>
+            <tbody>
+              <tr><td>1904</td><td>4</td><td>4</td><td>190</td></tr>
+              <tr><td>190</td><td>0</td><td>4</td><td>19</td></tr>
+              <tr><td>19</td><td>9</td><td>13</td><td>1</td></tr>
+              <tr><td>1</td><td>1</td><td>14</td><td>0</td></tr>
+            </tbody>
+          </table>
+          <p><code>n</code> is now 0, so the loop stops and returns 14. The loop always ends because <code>n / 10</code> is smaller than <code>n</code> whenever <code>n &gt; 0</code>.</p>
+        </details>
+
+        <h3>Greatest common divisor by subtraction</h3>
+        <p>For <code>a, b &gt;= 1</code>: subtracting the smaller number from the larger one doesn't change the gcd. Keep doing it until the two numbers are equal.</p>
+        <div class="chart-wrap"><div data-chart="gcd"></div></div>
+        <div class="question"><strong>Question:</strong> Trace <code>gcd(12, 18)</code> and <code>gcd(21, 6)</code>. Then edit the last line to <code>gcd(5, 0)</code> and run it. What happens, and why?</div>
+        <div class="ide" data-sample="gcd"></div>
+        <details>
+          <summary>Answer</summary>
+          <p><code>gcd(12, 18)</code>: (12, 18) → (12, 6) → (6, 6). Output 6.</p>
+          <p><code>gcd(21, 6)</code>: (21, 6) → (15, 6) → (9, 6) → (3, 6) → (3, 3). Output 3.</p>
+          <p><code>gcd(5, 0)</code> never ends. <code>a &gt; b</code> every time, and <code>a = 5 - 0</code> leaves <code>a</code> at 5, so nothing changes.</p>
+          <p>When both inputs are at least 1, each pass subtracts at least 1 from <code>a + b</code>, so <code>a + b</code> keeps shrinking and the loop has to stop. With a 0, that is no longer true.</p>
+        </details>
+
+        <h3>Reading until −1</h3>
+        <p>Read numbers one at a time until you read −1. The −1 is a stop signal, not part of the data. Count how many times a number is bigger than the one before it.</p>
+        <div class="chart-wrap"><div data-chart="increases"></div></div>
+        <div class="question"><strong>Question:</strong> What is the output for <code>3 5 2 8 9 -1</code>? Then try <code>4 4 4 -1</code> and <code>1 -1</code> in the input box.</div>
+        <div class="ide" data-sample="increases"></div>
+        <details>
+          <summary>Answer</summary>
+          <p><code>3 5 2 8 9 -1</code> outputs 3: 3 → 5 is bigger, 5 → 2 is not, 2 → 8 is bigger, and 8 → 9 is bigger.</p>
+          <p><code>4 4 4 -1</code> outputs 0. Equal is not bigger.</p>
+          <p><code>1 -1</code> outputs 0. <code>cur</code> is −1 right away, so the loop body never runs.</p>
+        </details>
+        <div class="question"><strong>Question:</strong> Edit the program so it also prints the largest number it read, not counting the −1.</div>
+        <details>
+          <summary>Answer</summary>
+          <p>Add <code>int max = prev;</code> before the loop. Inside the loop, add <code>if (cur &gt; max) { max = cur; }</code>. After the loop, add <code>System.out.println(max);</code>. For <code>3 5 2 8 9 -1</code>, it prints 9.</p>
+        </details>
+      </section>
+
+      <section id="fors" data-nav="for">
+        <h2><code>for</code> loops</h2>
+        <pre class="static-code">for (initialization; condition; update) {
+    // body
+}</pre>
+        <p>The initialization runs once. Then the loop repeats three steps: check the condition, run the body, run the update. It stops when the condition is false.</p>
+        <p>Any <code>for</code> loop can be written as a <code>while</code> loop:</p>
+        <div class="two">
+          <pre class="static-code">for (int i = 0; i &lt; 3; i++) {
+    System.out.println(i);
+}</pre>
+          <pre class="static-code">int i = 0;
+while (i &lt; 3) {
+    System.out.println(i);
+    i++;
+}</pre>
+        </div>
+        <p>A variable declared in the <code>for</code> initialization only exists inside the loop.</p>
+
+        <h3>Odd numbers counting down</h3>
+        <p>Goal: print every odd number from the input down to −5. Both programs below do the same thing.</p>
+        <div class="question"><strong>Question:</strong> What should these print for input 4? What do they actually print? Find the bug.</div>
+        <div class="ide" data-sample="oddsWhile"></div>
+        <div class="ide" data-sample="oddsFor"></div>
+        <details>
+          <summary>Answer</summary>
+          <p>They should print 3, 1, −1, −3, −5, but they only print 3 and 1.</p>
+          <p>For a negative odd number, <code>% 2</code> gives −1, not 1. So <code>-3 % 2 == 1</code> is false. The fix is <code>i % 2 != 0</code>. Edit the code and run it again.</p>
+          <p>With input −2, the buggy versions print nothing at all.</p>
+        </details>
+        <div class="question"><strong>Question:</strong> In the <code>for</code> version, add <code>System.out.println(i);</code> after the loop. What happens?</div>
+        <details>
+          <summary>Answer</summary>
+          <p>It does not compile. <code>i</code> was declared in the <code>for</code> initialization, so it doesn't exist after the loop.</p>
+        </details>
+
+        <h3>Stepping by 2</h3>
+        <p>Instead of checking every number, start at the first odd number and subtract 2 each time. The initialization is empty because <code>j</code> is set before the loop. The semicolons are still required.</p>
+        <div class="ide" data-sample="oddsStep"></div>
+        <p>The same start can be written with the <code>? :</code> operator: <code>condition ? valueIfTrue : valueIfFalse</code>.</p>
+        <div class="ide" data-sample="ternary"></div>
+
+        <h3><code>do-while</code></h3>
+        <pre class="static-code">do {
+    // body
+} while (condition);</pre>
+        <p>The body runs first, and then the condition is checked. So the body always runs at least once.</p>
+        <div class="question"><strong>Question:</strong> What does this print?</div>
+        <div class="ide" data-sample="doWhile"></div>
+        <details>
+          <summary>Answer</summary>
+          <pre class="expect">do-while:
+10
+while:
+done</pre>
+          <p>The <code>do-while</code> prints 10 before it checks <code>15 &lt; 10</code>. The <code>while</code> loop checks <code>10 &lt; 10</code> first, which is false, so its body never runs.</p>
+        </details>
+      </section>
+
+      <section id="reason" data-nav="Loop reasoning">
+        <h2>Why a loop is correct, and why it stops</h2>
+        <p>An algorithm is correct if, for every input, it stops and gives the right output. For a loop you show two things:</p>
+        <ul>
+          <li><strong>Loop invariant:</strong> something that is true before the loop starts and stays true after every pass.</li>
+          <li><strong>Termination measure:</strong> a positive quantity that gets smaller on every pass. Since it can't shrink forever, the loop must stop.</li>
+        </ul>
+        <div class="ide" data-sample="power"></div>
+        <div class="question"><strong>Question:</strong> Trace <code>power(3, 4)</code>. What is the loop invariant? What is the termination measure?</div>
+        <details>
+          <summary>Answer</summary>
+          <table>
+            <thead><tr><th>i</th><th>result</th><th>k − i</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>1</td><td>4</td></tr>
+              <tr><td>1</td><td>3</td><td>3</td></tr>
+              <tr><td>2</td><td>9</td><td>2</td></tr>
+              <tr><td>3</td><td>27</td><td>1</td></tr>
+              <tr><td>4</td><td>81</td><td>0, and <code>i &lt; k</code> is false</td></tr>
+            </tbody>
+          </table>
+          <p><strong>Invariant:</strong> <code>result</code> equals <code>base</code> to the power <code>i</code>, and <code>i &lt;= k</code>. When the loop ends, <code>i == k</code>, so <code>result</code> is <code>base</code> to the power <code>k</code>.</p>
+          <p><strong>Termination measure:</strong> <code>k - i</code>. It is positive whenever the body runs, and it drops by 1 each pass.</p>
+        </details>
+        <div class="question"><strong>Question:</strong> Give an invariant and a termination measure for the earlier loops: sum of digits, gcd, and reading until −1.</div>
+        <details>
+          <summary>Answer</summary>
+          <ul>
+            <li><strong>Sum of digits:</strong> <code>sum</code> is the sum of the digits already removed from <code>n</code>. The measure is <code>n</code>.</li>
+            <li><strong>gcd:</strong> the gcd of <code>a</code> and <code>b</code> equals the gcd of the original inputs. The measure is <code>a + b</code>.</li>
+            <li><strong>Reading until −1:</strong> <code>count</code> is the number of increases among the numbers read so far. There is no variable that works as a measure. The loop stops only because the input eventually contains −1.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="practice" data-nav="Practice">
+        <h2>Practice problems</h2>
+        <p>Write each one on paper first, then open the answer.</p>
+
+        <h3>1. Celsius to Fahrenheit</h3>
+        <p>Write <code>public static int c2f(int c)</code> that converts Celsius to Fahrenheit, rounded toward zero, using only <code>int</code>. The formula is F = C × 9/5 + 32.</p>
+        <div class="question"><strong>Question:</strong> Does <code>c * 9 / 5 + 32</code> work? Try <code>c = -17</code>, where the exact answer is 1.4. And what is <code>37 * (9 / 5) + 32</code>?</div>
+        <details>
+          <summary>Answer</summary>
+          <p><code>c * 9 / 5 + 32</code> gives 2 for −17. <code>-153 / 5</code> is −30.6, which rounds toward zero to −30, and then adding 32 gives 2. The correct answer is 1.</p>
+          <p>The fix is to do the division last: <code>(c * 9 + 160) / 5</code>. Since 32 × 5 = 160, this is the same formula, but the rounding happens on the final answer.</p>
+          <p><code>37 * (9 / 5) + 32</code> is 69, because <code>9 / 5</code> is 1.</p>
+          <div class="ide" data-sample="c2f"></div>
+        </details>
+
+        <h3>2. Seconds to hours, minutes, and seconds</h3>
+        <p>Write three methods, <code>hours(s)</code>, <code>minutes(s)</code>, and <code>seconds(s)</code>, for a number of seconds <code>s &gt;= 0</code>. For example, 3725 seconds is 1 hour, 2 minutes, and 5 seconds.</p>
+        <details>
+          <summary>Answer</summary>
+          <p>An hour is 3600 seconds. <code>s / 3600</code> is the hours. <code>s % 3600</code> is what's left after removing the hours, and dividing that by 60 gives the minutes. <code>s % 60</code> is the seconds.</p>
+          <div class="ide" data-sample="clock"></div>
+        </details>
+
+        <h3>3. Leap years</h3>
+        <p>A year is a leap year if it is divisible by 4, except years divisible by 100 are not, except years divisible by 400 are. Write <code>public static boolean isLeap(int y)</code> in one <code>return</code> statement. Check 2024, 2023, 1900, and 2000.</p>
+        <details>
+          <summary>Answer</summary>
+          <p>2024 and 2000 are leap years. 2023 and 1900 are not.</p>
+          <div class="ide" data-sample="leap"></div>
+        </details>
+
+        <h3>4. Reverse the digits</h3>
+        <p>For <code>n &gt;= 0</code>, return the number with its digits reversed. What happens to 1200?</p>
+        <details>
+          <summary>Answer</summary>
+          <p>Each pass moves the last digit of <code>n</code> onto the end of <code>rev</code>: <code>rev = rev * 10 + n % 10</code>, then <code>n = n / 10</code>.</p>
+          <p>1200 becomes 21, because an int can't start with zeros. 405 becomes 504, so a 0 in the middle is kept.</p>
+          <div class="ide" data-sample="reverse"></div>
+        </details>
+
+        <h3>5. Divisible by 3 or 5, but not both</h3>
+        <p>For <code>n &gt;= 0</code>, count the numbers from 1 to <code>n</code> that are divisible by 3 or by 5, but not by both. Use one loop and <code>&amp;&amp;</code>, <code>||</code>, <code>!</code>. Find <code>count(15)</code>, <code>count(10)</code>, and <code>count(1)</code>.</p>
+        <details>
+          <summary>Answer</summary>
+          <p><code>count(15)</code> is 6: 3, 5, 6, 9, 10, 12. 15 is divisible by both, so it doesn't count.</p>
+          <p><code>count(10)</code> is 5. <code>count(1)</code> is 0.</p>
+          <div class="ide" data-sample="exclusive"></div>
+        </details>
+
+        <h3>6. Prime numbers</h3>
+        <p>Write <code>public static boolean isPrime(int n)</code>. A prime is a number of at least 2 whose only divisors are 1 and itself. Why is it enough to test divisors <code>d</code> while <code>d * d &lt;= n</code>?</p>
+        <details>
+          <summary>Answer</summary>
+          <p>If <code>n = d × e</code>, the smaller of <code>d</code> and <code>e</code> is at most √n. So if <code>n</code> has any divisor besides 1 and itself, one of them is small enough that <code>d * d &lt;= n</code>.</p>
+          <div class="ide" data-sample="prime"></div>
+        </details>
+      </section>
+
+      <section id="search" data-nav="Search and sort">
+        <h2>Searching and sorting</h2>
+
+        <h3>Binary search</h3>
+        <p>Binary search finds a number <code>n</code> in a <strong>sorted</strong> list:</p>
+        <ol>
+          <li>Set <code>lo = 1</code> and <code>hi = length</code>.</li>
+          <li>If <code>lo &gt; hi</code>, output false.</li>
+          <li>Set <code>mid</code> = (<code>lo + hi</code>) / 2, rounded down.</li>
+          <li>If <code>list[mid] = n</code>, output true.</li>
+          <li>If <code>list[mid] &gt; n</code>, set <code>hi = mid - 1</code>. Otherwise set <code>lo = mid + 1</code>. Go back to step 2.</li>
+        </ol>
+        <div class="question"><strong>Question:</strong> Trace binary search on <code>[3, 7, 10, 14, 21, 28, 35, 42]</code> for <code>n = 28</code>, then for <code>n = 12</code>.</div>
+        <details>
+          <summary>Answer</summary>
+          <table>
+            <caption>n = 28</caption>
+            <thead><tr><th>lo</th><th>hi</th><th>mid</th><th>list[mid]</th><th>next step</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>8</td><td>4</td><td>14</td><td>14 &lt; 28, so lo = 5</td></tr>
+              <tr><td>5</td><td>8</td><td>6</td><td>28</td><td>equal, output true</td></tr>
+            </tbody>
+          </table>
+          <table>
+            <caption>n = 12</caption>
+            <thead><tr><th>lo</th><th>hi</th><th>mid</th><th>list[mid]</th><th>next step</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>8</td><td>4</td><td>14</td><td>14 &gt; 12, so hi = 3</td></tr>
+              <tr><td>1</td><td>3</td><td>2</td><td>7</td><td>7 &lt; 12, so lo = 3</td></tr>
+              <tr><td>3</td><td>3</td><td>3</td><td>10</td><td>10 &lt; 12, so lo = 4</td></tr>
+              <tr><td>4</td><td>3</td><td></td><td></td><td>lo &gt; hi, output false</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <div class="question"><strong>Question:</strong> What goes wrong on an unsorted list? Can it say true when the number isn't there? Can it say false when the number is there?</div>
+        <details>
+          <summary>Answer</summary>
+          <p>It can say false when the number is there. On <code>[9, 2, 5]</code> searching for 9: <code>mid = 2</code>, and 2 &lt; 9, so <code>lo = 3</code>. Then <code>mid = 3</code>, and 5 &lt; 9, so <code>lo = 4</code>. Now <code>lo &gt; hi</code>, so it outputs false, even though 9 is in the list.</p>
+          <p>It can never say true when the number isn't there, because it only outputs true after finding <code>list[mid] = n</code>.</p>
+        </details>
+
+        <h3>Selection sort</h3>
+        <p>For position 1, then 2, then 3, and so on: find the smallest number in the rest of the list and swap it into that position.</p>
+        <div class="question"><strong>Question:</strong> Sort <code>[6, 2, 9, 4, 1]</code>. Write the list after each swap.</div>
+        <details>
+          <summary>Answer</summary>
+          <ol>
+            <li>Position 1: the smallest is 1. Swap 6 and 1 to get <code>[1, 2, 9, 4, 6]</code>.</li>
+            <li>Position 2: the smallest of the rest is 2, which is already there. The list stays <code>[1, 2, 9, 4, 6]</code>.</li>
+            <li>Position 3: the smallest of the rest is 4. Swap 9 and 4 to get <code>[1, 2, 4, 9, 6]</code>.</li>
+            <li>Position 4: the smallest of the rest is 6. Swap 9 and 6 to get <code>[1, 2, 4, 6, 9]</code>.</li>
+          </ol>
+          <p>The last position doesn't need its own step. Once the first four are in place, the last number must be the largest.</p>
+        </details>
+
+        <h3>Changing a flowchart</h3>
+        <p>Go back to <a href="#charts">the list chart</a> that outputs the position of the first element greater than <code>n</code>.</p>
+        <div class="question"><strong>Question:</strong> What does each change do? Give an input where the output is different from the original.</div>
+        <ol>
+          <li>Replace <code>list[i] &gt; n?</code> with <code>list[i] &gt;= n?</code></li>
+          <li>Replace <code>Output: i</code> with <code>Output: list[i]</code></li>
+          <li>Swap the two diamonds, so <code>list[i] &gt; n?</code> is asked before <code>i &gt; length?</code></li>
+        </ol>
+        <details>
+          <summary>Answer</summary>
+          <ol>
+            <li>It finds the first element greater than <strong>or equal to</strong> <code>n</code>. On <code>[3, 1, 4]</code>, <code>n = 4</code>, it outputs 3 instead of 0.</li>
+            <li>It outputs the element itself instead of its position. On <code>[4, 9, 2, 11]</code>, <code>n = 5</code>, it outputs 9 instead of 2. When nothing is found it still outputs 0, which is confusing if 0 could be in the list.</li>
+            <li>When nothing is found, it reads <code>list[length + 1]</code>, which doesn't exist. On <code>[3, 1, 4]</code>, <code>n = 4</code>, it would read <code>list[4]</code>.</li>
+          </ol>
+        </details>
+      </section>
+    </main>
+  </div>
+  <script src="interpreter.js"></script>
+  <script src="samples.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
